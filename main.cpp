@@ -5,8 +5,9 @@
 
 #include "opencv2/highgui/highgui.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-#include <iostream>
 #include <iomanip>
+#include <iostream>
+#include <sstream>
 
 using namespace cv;
 using namespace std;
@@ -29,7 +30,6 @@ class Circle{
             /// img enhanchment untuk mereduce noise
             GaussianBlur(src,dst, Size(3, 3), 2, 2 );
             medianBlur(dst,dst,3);
-            imshow("Image", dst);
 
             vector<Vec3f> circles;
 
@@ -56,20 +56,29 @@ class Circle{
 };
 
 int main(){
-    Mat src = imread("picture/coin1.jpg", 0);
-    Mat result;
-
-    if(!src.data){
-        cout<<"file gambar tidak tersedia"<<endl;
+    VideoCapture cap(0); // open the default camera
+    if(!cap.isOpened())  // check if we succeeded
         return -1;
-    }
 
     Circle c;
-    c.processHoughCircle(src);
-    result = c.getSrc().clone();
-    imshow("Hough Circle", result);
-    cout<< c.getSum();
 
-    waitKey();
+    while(true)
+    {
+        Mat frame,result;
+        cap >> frame; // get a new frame from camera
+        flip(frame, frame,1); //agar tidak mirror
+        c.processHoughCircle(frame);
+        result = c.getSrc().clone();
+
+        cvtColor(result,result,CV_GRAY2BGR);
+
+        ostringstream sum;
+        sum << c.getSum();
+        putText(result,"Jumlah lingkarang: " + sum.str(),Point(10,25),FONT_HERSHEY_SIMPLEX,1,Scalar(0,255,0),4);
+
+        imshow("Hough Circle", result);
+
+        if(waitKey(1) >= 0) break;
+    }
     return 0;
 }
