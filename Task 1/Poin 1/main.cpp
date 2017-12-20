@@ -31,10 +31,8 @@ class Circle{
 
             /// img enhanchment untuk mereduce noise
             src = contrast(src);
-            Mat temp = src.clone();
-            temp = temp - 64;
-            GaussianBlur(temp,dst, Size(3, 3), 2, 2 );
-            //medianBlur(dst,dst,3);
+            GaussianBlur(src,dst, Size(3, 3), 2, 2 );
+            medianBlur(dst,dst,3);
             vector<Vec3f> circles;
 
             /// LIBRARY HOUGH UNTUK MENDETEKSI LINGKARAN
@@ -60,7 +58,10 @@ class Circle{
 };
 
 int main(){
-    Mat src = imread("picture/coin3.jpg", 0);
+    /*
+        ada coin1-coin5.jpg
+    */
+    Mat src = imread("picture/coin1.jpg", 0);
     Mat result;
 
     if(!src.data){
