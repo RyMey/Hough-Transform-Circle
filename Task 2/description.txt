@@ -1,0 +1,1 @@
+sebuah program deteksi dengan input video(cam) dengan memanfaatkan fitur Hough Transform line untuk menghitung jumlah objek yang melewati garis yang diletakkan di tengah frame. (misalnya koin yang dilempar dari atas ke bawah) lalu munculkan jumlah hitung realtimenya pada layar.

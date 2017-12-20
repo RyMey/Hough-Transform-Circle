@@ -1,0 +1,4 @@
+•fitur Hough Transform Circle agar dapat menghitung jumlah lingkaran (lakukan pengujian dengan menggunakan 3 gambar yang berbeda)
+•inputan dengan menggunakan media video dengan memanfaatkan fitur HT Circle
+•Ada fungsi baru (dan pilihan transform) dengan menggunakan teknik ‘blob’, ‘countour’, dan ‘template matching’
+•program baru dengan memanfaatkan teknik Haar Classifier
