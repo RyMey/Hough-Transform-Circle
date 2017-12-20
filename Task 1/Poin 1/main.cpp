@@ -12,7 +12,7 @@
 
 using namespace cv;
 using namespace std;
-#include "contrast.h"
+#include "../../contrast.h"
 
 class Circle{
     private:
