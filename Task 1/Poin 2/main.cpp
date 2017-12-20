@@ -1,7 +1,7 @@
 /*
     Rya Meyvriska
     G64164008
-    Task 1
+    Task 1 Poin 2
 */
 
 #include "opencv2/highgui/highgui.hpp"
@@ -12,6 +12,7 @@
 
 using namespace cv;
 using namespace std;
+#include "../../contrast.h"
 
 class Circle{
     private:
@@ -29,6 +30,7 @@ class Circle{
             }
 
             /// img enhanchment untuk mereduce noise
+            src = contrast(src);
             GaussianBlur(src,dst, Size(3, 3), 2, 2 );
             medianBlur(dst,dst,3);
 
