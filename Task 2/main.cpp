@@ -63,6 +63,34 @@ class Circle{
         }
 };
 
+Mat ProcessHoughLines(Mat src){
+    Mat dst, cdst;
+
+    Canny(src, dst, 50, 200, 3); ///EDGE DETECTION
+    cvtColor(dst, cdst, CV_GRAY2BGR);
+    //cdst = dst.clone();
+
+    vector<Vec2f> lines, lines2;///VARIABLE UNTUK MENAMPUNG GAMBAR GARIS
+
+    /// LIBRARY HOUGH UNTUK MENDETEKSI GARIS
+    HoughLines(dst, lines, 1, CV_PI/180, 150, 0, 0 );
+
+    /// ALGORITMA MENGGAMBAR GARIS
+    for( size_t i = 0; i < lines.size(); i++ )
+    {
+        float rho = lines[i][0], theta = lines[i][1];
+        Point pt1, pt2;
+        double a = cos(theta), b = sin(theta);
+        double x0 = a*rho, y0 = b*rho;
+            pt1.x = cvRound(x0 + 1000*(-b));
+            pt1.y = cvRound(y0 + 1000*(a));
+            pt2.x = cvRound(x0 - 1000*(-b));
+            pt2.y = cvRound(y0 - 1000*(a));
+        line( cdst, pt1, pt2, Scalar(0,0,255), 3, CV_AA);
+    }
+    return cdst;
+}
+
 int main(){
     VideoCapture cap(0); // open the default camera
     if(!cap.isOpened())  // check if we succeeded
@@ -77,13 +105,13 @@ int main(){
         flip(frame, frame,1); //agar tidak mirror
         c.processHoughCircle(frame);
         result = c.getSrc().clone();
-
         cvtColor(result,result,CV_GRAY2BGR);
+        //result = ProcessHoughLines(frame); //un comment and comment this to make circle or line
 
         ostringstream sum;
         sum << c.getSum();
         putText(result,"Jumlah objek: " + sum.str(),Point(10,25),FONT_HERSHEY_SIMPLEX,1,Scalar(0,255,0),4);
-        line(result,Point(0,result.rows/2),Point(result.cols,result.rows/2),Scalar(0,0,255),4,3);
+        line(result,Point(0,result.rows/2),Point(result.cols,result.rows/2),Scalar(255,0,0),4,3);
         imshow("Hough Circle", result);
 
         if(waitKey(1) >= 0) break;
